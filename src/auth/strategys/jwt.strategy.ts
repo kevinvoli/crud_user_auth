@@ -22,9 +22,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: PayloadInterface) {
-    console.log("Hoo lalalalal erreur aaaa",payload)
         const user = await this.userService.findOne(payload.id)
         if (!user)  throw new UnauthorizedException() 
+    // console.log("Hoo lalalalal aaazzz aaaa",user)
+
         return user
     }
 }

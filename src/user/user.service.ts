@@ -21,11 +21,12 @@ export class UserService {
     try {
 
       const newUser = new  User()
-      newUser.password = createUserDto.password;
+      newUser.password = createUserDto?.password;
       newUser.name = createUserDto.name;
       newUser.prenoms = createUserDto.prenoms;
       newUser.contacts = createUserDto.contacts;
       newUser.email = createUserDto.email
+      newUser.isAdmin = createUserDto?.isAdmin;
       newUser.salt = await bcrypt.genSalt();
       const user = await this.usersRepository.save(newUser)
       console.log(user);
@@ -48,6 +49,10 @@ export class UserService {
         where:{
           id:id
         },
+        relations:{
+          role:{permissions:true}
+          
+        }
       })
       delete user.password
       return user;
@@ -65,6 +70,9 @@ export class UserService {
       users= await this.usersRepository.findOne({
       where: {email:email},
       })
+      const passwords =await users.passwordHash(password)
+      console.log("user pass", await users.validatePassword(passwords, users.password));
+      
       if(users && await users.validatePassword(password, users.password)){
         const payload = { email: users.email, id:users.id, name:users.name }   
         return payload

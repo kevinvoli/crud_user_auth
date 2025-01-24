@@ -5,6 +5,8 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ArticleModule } from './article/article.module';
+import { CaslModule } from './casl/casl.module';
 import * as Joi from '@hapi/joi';
 
 
@@ -22,7 +24,9 @@ import * as Joi from '@hapi/joi';
     }),
     DatabaseModule,
     UserModule,
-    AuthModule],
+    AuthModule,
+    ArticleModule,
+    CaslModule],
   controllers: [AppController],
   providers: [AppService],
 })

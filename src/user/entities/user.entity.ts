@@ -1,5 +1,11 @@
-import { BeforeInsert, Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
+import { Role } from "./role.entity";
+import { Article } from "src/article/entities/article.entity";
+
+
+
+
 
 @Entity()
 export class User {
@@ -21,8 +27,20 @@ export class User {
   @Column("varchar", { name: "contacts", nullable: true, length: 50 })
   contacts: string | null;
 
+
   @Column({select:true})
   salt: string;
+
+  @Column({default:false})
+  isAdmin:boolean;
+
+  // les role de lutilisateur 
+
+  @OneToMany(()=> Article, (article)=> article.authorId)
+  article: Article[]
+
+  @ManyToOne(() => Role, (role) => role.users, { nullable: true, onDelete: 'SET NULL' })
+  role: Role;
 
   @CreateDateColumn({type:'datetime',  name: 'created_at'})
   createdAt: Date;
@@ -37,8 +55,10 @@ export class User {
 private async hashPassword() {
 this.password = await bcrypt.hash(this.password,this.salt);
 }
-async validatePassword(password: string, hashedPassword: string): Promise<boolean> {
+async validatePassword(password: string, hashedPassword: string) {
   return await bcrypt.compare(password, hashedPassword).then(result => {
+    console.log("resultar");
+    
     return result
   }).catch(erreur=>{
     return erreur

@@ -16,6 +16,7 @@ import { IsEmail } from 'class-validator';
 import { CreateGoogleLoginDto } from './dto/create-googleLogin.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 
 @Injectable()
 export class AuthService {
@@ -73,11 +74,13 @@ export class AuthService {
     } 
   }
   async login(loginUserDto: LoginUserDto) {
-    console.log(loginUserDto)
+    console.log("data ddddd user",loginUserDto)
     const payload = await this.userService.login(loginUserDto)
     if (!payload) {
         throw new UnauthorizedException('Invalid credentials')
     }
+    console.log("user connexion", payload);
+    
     const newToken = new Token()
     const accessToken =await this.tokenService.getAccessToken(payload)
     const refreshToken = await this.tokenService.getRefreshToken(payload)
@@ -93,10 +96,12 @@ export class AuthService {
   async mailConfirmation(token:string){
     try {
       const user =  await this.tokenService.verifyToken(token)
-      await this.userService.create(user)
-      return user
+      const result =  await this.userService.create(user)
+      return result
     } catch (error) {
-      throw new HttpException('USER_NOT_FOUND', HttpStatus.FORBIDDEN);
+      console.log("erruooscdvf=",error);
+      
+      throw new ExceptionsHandler(error);
     }
   }
 

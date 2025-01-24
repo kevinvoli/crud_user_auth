@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
+import { IsBoolean, IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 
 export class CreateUserDto {
   @Length(5,30)
@@ -8,7 +8,7 @@ export class CreateUserDto {
   
   @IsNotEmpty()
   @IsString()
-  @Length(8,50)
+  @Length(1,50)
   password: string;
 
   @IsNotEmpty()
@@ -25,6 +25,8 @@ export class CreateUserDto {
   @IsString()
   @Length(4,12)
   contacts: string | null; 
+ 
+  isAdmin: boolean | null; 
 }
 
 

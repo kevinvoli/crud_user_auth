@@ -6,6 +6,6 @@ export class LoginUserDto {
     email: string
 
     @IsNotEmpty()
-    @Length(8,50)
+    @Length(1,50)
     password: string;
 }

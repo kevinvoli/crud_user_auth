@@ -80,10 +80,10 @@ export class TokenService{
       const confirmation= await this.jwtService.verify(token,{
         secret: this.configService.get('SECRET'),
       })
-      console.log("la confirmation:"+ confirmation );
+      
+      console.log("la confirmation aaaz:",confirmation );
       return confirmation
     } catch (error) {
-      log(error)
       throw  new HttpException(error,HttpStatus.BAD_REQUEST)
     }
   }

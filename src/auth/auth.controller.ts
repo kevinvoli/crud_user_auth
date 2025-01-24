@@ -57,7 +57,6 @@ export class AuthController {
   @Post('logout')
   async logout(@Request()req, @Res({passthrough:true}) respons:Response){
     respons.clearCookie('jwt')
-    console.log("cococococococococococococococococococococo");
     
     const result= await this.authService.localLogout(req.user)
     console.log("cococococococococococococococococococococo", result);
@@ -67,10 +66,15 @@ export class AuthController {
 
   @Get('confirmation/:token')
   async  mailconfirmation(@Param('token')token:string){
-    console.log(token);
-    const confirmation = await this.authService.mailConfirmation(token)
-    console.log(confirmation);
-    return 'succes to register'
+    try {
+      console.log(token);
+      const confirmation = await this.authService.mailConfirmation(token)
+      console.log(confirmation);
+      return 'succes to register'
+    } catch (error) {
+      throw new Error(error)
+    }
+   
   }
 
   @Post('resete-password')

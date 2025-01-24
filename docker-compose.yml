@@ -1,0 +1,19 @@
+services:
+  mysql:
+    image: mysql
+    container_name: mysql-maitre
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: crud_user
+      MYSQL_USER: kevin
+      MYSQL_PASSWORD: root
+    ports:
+      - 3305:3306
+
+  nestjs:
+    build: .
+    container_name: crud-nestjs
+    ports:
+      - 3000:3000
+    depends_on:
+      - mysql

@@ -18,6 +18,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     ]);
 
     if (isPublic) return true;
+
     console.log("Hoo lalalalal erreur",this.reflector)
     return super.canActivate(context);
   }
